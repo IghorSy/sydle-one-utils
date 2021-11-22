@@ -12,7 +12,8 @@ module.exports = {
     compareDates: compareDates,
     createMapKeyValue: createMapKeyValue,
     camelCase: camelCase,
-    fieldChanged: fieldChanged
+    fieldChanged: fieldChanged,
+    validateObjectItIsFilled : validateObjectItIsFilled
 };
 
 
@@ -35,7 +36,7 @@ function removeDuplicates(array) {
 }
 
 function isEmptyOrSpacesOrUndefined(str) {
-    return str === null || str.match(/^ *$/) !== null || str === undefined;
+    return str === null || String(str).match(/^ *$/) !== null || str === undefined;
 }
 
 function createMap(array, key) {
@@ -229,4 +230,22 @@ function fieldChanged(fieldName, object, oldObject){
     }
     
     return selected || changed;
+}
+
+function validateObjectItIsFilled(obj){
+    
+    (Object.keys(obj) ||  []).forEach(field => {
+
+        if(typeof(obj[field]) === "object"){
+            validateObjectItIsFilled(obj[field]);
+        }
+
+        if(!isEmptyOrSpacesOrUndefined(obj[field])&& typeof(obj[field]) !== "object"){
+            throw "O campo " + field + " está preenchido."
+        }
+
+    })
+
+    console.log("Objecto não está preenchido.");
+
 }
