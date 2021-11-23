@@ -13,7 +13,10 @@ module.exports = {
     createMapKeyValue: createMapKeyValue,
     camelCase: camelCase,
     fieldChanged: fieldChanged,
-    validateObjectItIsFilled : validateObjectItIsFilled
+    validateObjectItIsFilled : validateObjectItIsFilled,
+    flat: flat,
+    toUpperCase : toUpperCase,
+    toLocaleLowerCase: toLocaleLowerCase
 };
 
 
@@ -249,3 +252,15 @@ function validateObjectItIsFilled(obj){
     console.log("Objecto não está preenchido.");
 
 }
+
+function flat(arr){
+    return [].concat.apply([],arr);
+}
+
+function toUpperCase(str){
+    return String(str).toUpperCase();
+};
+
+function toLocaleLowerCase(str){
+    return String(str).toLocaleLowerCase();
+};
