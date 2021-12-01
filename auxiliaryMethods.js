@@ -16,7 +16,8 @@ module.exports = {
     validateObjectItIsFilled : validateObjectItIsFilled,
     flat: flat,
     toUpperCase : toUpperCase,
-    toLocaleLowerCase: toLocaleLowerCase
+    toLocaleLowerCase: toLocaleLowerCase,
+    parseToArray: parseToArray
 };
 
 
@@ -264,3 +265,14 @@ function toUpperCase(str){
 function toLocaleLowerCase(str){
     return String(str).toLocaleLowerCase();
 };
+
+function parseToArray(val){
+
+    if(val === 0 || val === false)
+        val = [val];
+    
+    val = (val || []);
+    return  Array.isArray(val) ? val : [val];
+            
+    
+}
