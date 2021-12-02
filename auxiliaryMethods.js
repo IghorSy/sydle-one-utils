@@ -17,7 +17,8 @@ module.exports = {
     flat: flat,
     toUpperCase : toUpperCase,
     toLocaleLowerCase: toLocaleLowerCase,
-    parseToArray: parseToArray
+    parseToArray: parseToArray,
+    deepCopy:deepCopy
 };
 
 
@@ -275,4 +276,8 @@ function parseToArray(val){
     return  Array.isArray(val) ? val : [val];
             
     
+}
+
+function deepCopy(obj) {
+    return JSON.parse(_utils.stringifyAsJson(obj));
 }
