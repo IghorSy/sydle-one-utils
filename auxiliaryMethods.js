@@ -286,5 +286,8 @@ function deepCopy(obj) {
 function deepCopyONE(obj) {
     const oneScope = this;
     const _utils = {oneScope}
-    return JSON.parse(_utils.stringifyAsJson(obj));
+    if(_utils){
+        return JSON.parse(_utils.stringifyAsJson(obj));
+    }
+  
 }
