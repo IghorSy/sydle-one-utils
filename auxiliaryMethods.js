@@ -19,7 +19,8 @@ module.exports = {
     toLocaleLowerCase: toLocaleLowerCase,
     parseToArray: parseToArray,
     deepCopy:deepCopy,
-    deepCopyONE: deepCopyONE
+    deepCopyONE: deepCopyONE,
+    removeMask: removeMask
 };
 
 
@@ -291,3 +292,9 @@ function deepCopyONE(obj) {
     }
   
 }
+
+function removeMask(number) {
+    if (number) {
+        return number.replace(/[^\d]+/g, '');
+    }
+} 
