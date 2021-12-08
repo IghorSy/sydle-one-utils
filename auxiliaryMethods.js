@@ -295,6 +295,6 @@ function deepCopyONE(obj) {
 
 function removeMask(number) {
     if (number) {
-        return number.replace(/[^\d]+/g, '');
+        return String(number).replace(/[^\d]+/g, '');
     }
 } 
