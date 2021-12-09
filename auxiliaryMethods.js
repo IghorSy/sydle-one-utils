@@ -20,7 +20,10 @@ module.exports = {
     parseToArray: parseToArray,
     deepCopy:deepCopy,
     deepCopyONE: deepCopyONE,
-    removeMask: removeMask
+    removeMask: removeMask,
+    prepareSingularOrPlural : prepareSingularOrPlural,
+    inQuotes: inQuotes,
+    makeString:makeString
 };
 
 
@@ -298,3 +301,25 @@ function removeMask(number) {
         return String(number).replace(/[^\d]+/g, '');
     }
 } 
+
+
+function prepareSingularOrPlural(counter) {
+    return (singularStr, pluralStr) => {
+        return counter > 1 ? pluralStr : singularStr;
+    };
+}
+
+function inQuotes(str) {
+    return '"' + str + '"';
+}
+
+function makeString(arr) {
+    if (arr.length === 1) {
+        return arr[0];
+    }
+
+    const firsts = arr.slice(0, arr.length - 1);
+    const last = arr[arr.length - 1];
+
+    return firsts.join(', ') + ' e ' + last;
+}
