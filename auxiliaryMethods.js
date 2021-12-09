@@ -15,6 +15,7 @@ module.exports = {
     fieldChanged: fieldChanged,
     validateObjectItIsFilled : validateObjectItIsFilled,
     flat: flat,
+    flattenDeep: flattenDeep,
     toUpperCase : toUpperCase,
     toLocaleLowerCase: toLocaleLowerCase,
     parseToArray: parseToArray,
@@ -24,6 +25,7 @@ module.exports = {
     prepareSingularOrPlural : prepareSingularOrPlural,
     inQuotes: inQuotes,
     makeString:makeString
+    
 };
 
 
@@ -263,6 +265,10 @@ function validateObjectItIsFilled(obj){
 function flat(arr){
     return [].concat.apply([],arr);
 }
+
+function flattenDeep(arr1){
+    return arr1.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
+ }
 
 function toUpperCase(str){
     return String(str).toUpperCase();
