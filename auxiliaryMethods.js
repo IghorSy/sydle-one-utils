@@ -24,7 +24,8 @@ module.exports = {
     removeMask: removeMask,
     prepareSingularOrPlural : prepareSingularOrPlural,
     inQuotes: inQuotes,
-    makeString:makeString
+    makeString:makeString,
+    firtLetterToUpperCase: firtLetterToUpperCase
     
 };
 
@@ -328,4 +329,8 @@ function makeString(arr) {
     const last = arr[arr.length - 1];
 
     return firsts.join(', ') + ' e ' + last;
+}
+
+function firtLetterToUpperCase(str){
+    return str.toLowerCase().replace(/(?:^|\s)(?!da|de|do)\S/g, l => l.toUpperCase());
 }
