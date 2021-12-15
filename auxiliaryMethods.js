@@ -25,7 +25,8 @@ module.exports = {
     prepareSingularOrPlural : prepareSingularOrPlural,
     inQuotes: inQuotes,
     makeString:makeString,
-    firtLetterToUpperCase: firtLetterToUpperCase
+    firtLetterToUpperCase: firtLetterToUpperCase,
+    objectEntries: objectEntries
     
 };
 
@@ -76,6 +77,18 @@ function createMapKeyValue(arr, key, name) {
 
     }, {});
 
+}
+
+function objectEntries(obj){
+    
+        var ownProps = Object.keys(obj),
+            i = ownProps.length,
+            resArray = new Array(i); // preallocate the Array
+        while (i--)
+            resArray[i] = [ownProps[i], obj[ownProps[i]]];
+
+        return resArray;
+    
 }
 
 function howManyTimesTheValueAppears(arr) {
