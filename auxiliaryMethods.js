@@ -26,7 +26,8 @@ module.exports = {
     inQuotes: inQuotes,
     makeString:makeString,
     firtLetterToUpperCase: firtLetterToUpperCase,
-    objectEntries: objectEntries
+    objectEntries: objectEntries,
+    isCEPValid: isCEPValid
     
 };
 
@@ -347,3 +348,15 @@ function makeString(arr) {
 function firtLetterToUpperCase(str){
     return str.toLowerCase().replace(/(?:^|\s)(?!da|de|do)\S/g, l => l.toUpperCase());
 }
+
+function isCEPValid(cep){
+    //Funciona apenas para CEP no Brasil
+    if (!cep) {
+          throw "CEP não informado";
+      }
+      const validacep = /^[0-9]{8}$/;
+      cep = String(cep).replace(/[^0-9a-zA-Z]/g, '');
+  
+      return validacep.test(cep);
+  
+  }
