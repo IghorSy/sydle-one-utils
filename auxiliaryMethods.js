@@ -25,12 +25,14 @@ module.exports = {
     prepareSingularOrPlural : prepareSingularOrPlural,
     inQuotes: inQuotes,
     makeString:makeString,
-    firtLetterToUpperCase: firtLetterToUpperCase,
+    firstLetterToUpperCase: firstLetterToUpperCase,
     objectEntries: objectEntries,
     isCEPValid: isCEPValid
     
 };
 
+const oneScope = this;
+const {_utils} = oneScope;
 
 function contains(array, value) {
     var index = -1;
@@ -125,7 +127,11 @@ function howManyTimesTheValueAppears(arr) {
 }
 
 
+
+
 function hasChanged(object, oldObject, key, type) {
+
+   
 
     if (!object) { return; }
 
@@ -188,25 +194,19 @@ function compareObjs(obj1, obj2) {
             if (obj1[key] == null && obj2[key] == null) {
                 return true;
             } else if ((obj1[key] != null && obj2[key] == null) || (obj1[key] == null && obj2[key] != null)) {
-                // throw key + " - null" + obj2[key] + ' * *' + _utils.stringifyAsJson(obj1[key]);
                 return false;
             } else if (typeof obj1[key].getMonth === 'function' || typeof obj2[key].getMonth === 'function') {
-                // if (!this.compareDates(obj1[key], obj2[key])) throw key + " - date";
                 return this.compareDates(obj1[key], obj2[key]);
             } else if (typeof obj1[key] === 'string' || typeof obj1[key] === 'number' || typeof obj1[key] === 'boolean') {
-                // if (!(obj1[key] == obj2[key])) throw key + " - primitivo - " + obj1[key] + " - " + obj2[key];
                 return obj1[key] == obj2[key];
             } else if (Array.isArray(obj1[key]) && Array.isArray(obj2[key])) {
-                // if (!this.compareArrays(obj1[key], obj2[key])) throw key + " - Array";
                 return this.compareArrays(obj1[key], obj2[key]);
             } else if (obj1[key]._id && obj2[key]._id && obj1[key]._id === obj2[key]._id) {
                 return true;
             }
-            // throw key + " - nenhuma condição";
             return false;
         });
     } catch (err) {
-        // throw err;
         return false;
     }
 };
@@ -309,12 +309,7 @@ function deepCopy(obj) {
 }
 
 function deepCopyONE(obj) {
-    const oneScope = this;
-    const {_utils} = oneScope;
-    if(_utils){
-        return JSON.parse(_utils.stringifyAsJson(obj));
-    }
-  
+    return JSON.parse(_utils.stringifyAsJson(obj));
 }
 
 function removeMask(number) {
@@ -345,7 +340,7 @@ function makeString(arr) {
     return firsts.join(', ') + ' e ' + last;
 }
 
-function firtLetterToUpperCase(str){
+function firstLetterToUpperCase(str){
     return str.toLowerCase().replace(/(?:^|\s)(?!da|de|do)\S/g, l => l.toUpperCase());
 }
 
@@ -360,3 +355,29 @@ function isCEPValid(cep){
       return validacep.test(cep);
   
   }
+
+function removeEmpty(obj) {
+    const newObj = Object.keys(obj).reduce((accObj, key) => {
+        let value = JSON.parse(_utils.stringifyAsJson(obj[key]));
+        
+        if (isObject(value)) {
+            value = removeEmpty(value);
+        }
+        
+        if (value !== null && value !== undefined && isNotEmptyObject(value)) {
+            accObj[key] = value;
+        }
+        
+        return accObj;
+    }, {});
+    
+    return newObj;
+}
+
+function isObject(obj) {
+    return obj && typeof obj === 'object' && Object.getPrototypeOf(obj) === Object.prototype;
+}
+
+function isNotEmptyObject(obj) {
+    return !isObject(obj) || Object.keys(obj).length > 0;
+}
