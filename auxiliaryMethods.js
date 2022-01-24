@@ -27,7 +27,10 @@ module.exports = {
     makeString:makeString,
     firstLetterToUpperCase: firstLetterToUpperCase,
     objectEntries: objectEntries,
-    isCEPValid: isCEPValid
+    isCEPValid: isCEPValid,
+    removeEmpty : removeEmpty,
+    isObject : isObject,
+    isNotEmptyObject : isNotEmptyObject
     
 };
 
@@ -381,3 +384,4 @@ function isObject(obj) {
 function isNotEmptyObject(obj) {
     return !isObject(obj) || Object.keys(obj).length > 0;
 }
+
