@@ -20,7 +20,6 @@ module.exports = {
     toLocaleLowerCase: toLocaleLowerCase,
     parseToArray: parseToArray,
     deepCopy:deepCopy,
-    deepCopyONE: deepCopyONE,
     removeMask: removeMask,
     prepareSingularOrPlural : prepareSingularOrPlural,
     inQuotes: inQuotes,
@@ -28,14 +27,11 @@ module.exports = {
     firstLetterToUpperCase: firstLetterToUpperCase,
     objectEntries: objectEntries,
     isCEPValid: isCEPValid,
-    removeEmpty : removeEmpty,
     isObject : isObject,
     isNotEmptyObject : isNotEmptyObject
     
 };
 
-const oneScope = this;
-const {_utils} = oneScope;
 
 function contains(array, value) {
     var index = -1;
@@ -134,13 +130,11 @@ function howManyTimesTheValueAppears(arr) {
 
 function hasChanged(object, oldObject, key, type) {
 
-   
-
     if (!object) { return; }
 
     if ((object === undefined || object === null) || (key === undefined || key === null) || oldObject === undefined) {
 
-        throw "Object e object[" + key + "] são obrigatórios. Object:" + _utils.stringifyAsJson(object) + "/Key: " + key + "oldObject = " + _utils.stringifyAsJson(oldObject);
+        throw "Object e object[" + key + "] são obrigatórios. Object:" + JSON.stringify(object) + "/Key: " + key + "oldObject = " + JSON.stringify(oldObject);
     }
 
     if (!type) { throw "Tipo do campo não encontrado.Type: " + type; }
@@ -171,10 +165,6 @@ function hasChanged(object, oldObject, key, type) {
                     !oldObject[key] ||
                     oldObject[key]._id !== object[key]._id
                 )
-            break;
-        case "objectAsString":
-            isChanged = _utils.stringifyAsJson(object[key]) !== _utils.stringifyAsJson(oldObject[key]);
-
             break;
         default:
             break;
@@ -311,9 +301,8 @@ function deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
-function deepCopyONE(obj) {
-    return JSON.parse(_utils.stringifyAsJson(obj));
-}
+
+
 
 function removeMask(number) {
     if (number) {
@@ -358,24 +347,6 @@ function isCEPValid(cep){
       return validacep.test(cep);
   
   }
-
-function removeEmpty(obj) {
-    const newObj = Object.keys(obj).reduce((accObj, key) => {
-        let value = JSON.parse(_utils.stringifyAsJson(obj[key]));
-        
-        if (isObject(value)) {
-            value = removeEmpty(value);
-        }
-        
-        if (value !== null && value !== undefined && isNotEmptyObject(value)) {
-            accObj[key] = value;
-        }
-        
-        return accObj;
-    }, {});
-    
-    return newObj;
-}
 
 function isObject(obj) {
     return obj && typeof obj === 'object' && Object.getPrototypeOf(obj) === Object.prototype;
