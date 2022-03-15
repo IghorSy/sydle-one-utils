@@ -1,7 +1,7 @@
 module.exports = {
-
     contains: contains,
     removeDuplicates: removeDuplicates,
+    uniqueArray: uniqueArray,
     isEmptyOrSpacesOrUndefined: isEmptyOrSpacesOrUndefined,
     createMap: createMap,
     howManyTimesTheValueAppears: howManyTimesTheValueAppears,
@@ -13,23 +13,27 @@ module.exports = {
     createMapKeyValue: createMapKeyValue,
     camelCase: camelCase,
     fieldChanged: fieldChanged,
-    validateObjectItIsFilled : validateObjectItIsFilled,
+    validateObjectItIsFilled: validateObjectItIsFilled,
     flat: flat,
     flattenDeep: flattenDeep,
-    toUpperCase : toUpperCase,
+    toUpperCase: toUpperCase,
     toLocaleLowerCase: toLocaleLowerCase,
     parseToArray: parseToArray,
     deepCopy:deepCopy,
     removeMask: removeMask,
-    prepareSingularOrPlural : prepareSingularOrPlural,
+    singularOrPlural: singularOrPlural,
+    prepareSingularOrPlural: prepareSingularOrPlural,
     inQuotes: inQuotes,
     makeString:makeString,
     firstLetterToUpperCase: firstLetterToUpperCase,
     objectEntries: objectEntries,
     isCEPValid: isCEPValid,
-    isObject : isObject,
-    isNotEmptyObject : isNotEmptyObject
-    
+    isObject: isObject,
+    isNotEmptyObject: isNotEmptyObject,
+    padStart: padStart,
+    padEnd: padEnd,
+    escapeHTML: escapeHTML,
+    getErrorsStringFromException: getErrorsStringFromException
 };
 
 
@@ -37,7 +41,7 @@ function contains(array, value) {
     var index = -1;
     var length = array.length;
     while (++index < length) {
-        if (array[index] == value) {
+        if (array[index] === value) {
             return true;
         }
     }
@@ -48,6 +52,12 @@ function removeDuplicates(array) {
     var exist = {};
     return array.filter(function (item) {
         return exist.hasOwnProperty(item) ? false : (exist[item] = true);
+    });
+}
+
+function uniqueArray(array) {
+    return array.filter(function(item, pos) {
+        return array.indexOf(item) == pos;
     });
 }
 
@@ -308,20 +318,23 @@ function removeMask(number) {
     if (number) {
         return String(number).replace(/[^\d]+/g, '');
     }
-} 
+}
 
+function singularOrPlural(counter, singularStr, pluralStr) {
+    return counter > 1 ? pluralStr : singularStr;
+}
 
 function prepareSingularOrPlural(counter) {
-    return (singularStr, pluralStr) => {
-        return counter > 1 ? pluralStr : singularStr;
-    };
+    return (singularStr, pluralStr) => singularOrPlural(counter, pluralStr, singularStr);
 }
 
 function inQuotes(str) {
     return '"' + str + '"';
 }
 
-function makeString(arr) {
+function makeString(arr, lastJoin) {
+    lastJoin = lastJoin || 'e';
+    
     if (arr.length === 1) {
         return arr[0];
     }
@@ -329,7 +342,7 @@ function makeString(arr) {
     const firsts = arr.slice(0, arr.length - 1);
     const last = arr[arr.length - 1];
 
-    return firsts.join(', ') + ' e ' + last;
+    return firsts.join(', ') + ' ' + lastJoin + ' ' + last;
 }
 
 function firstLetterToUpperCase(str){
@@ -356,3 +369,35 @@ function isNotEmptyObject(obj) {
     return !isObject(obj) || Object.keys(obj).length > 0;
 }
 
+function padStart(str, targetLength, paddingChar) { 
+    const newStr = paddingChar.repeat(targetLength) + str;
+    return newStr.substr(newStr.length - targetLength);
+}
+
+function padEnd(str, targetLength, paddingChar) { 
+    const newStr = str + paddingChar.repeat(targetLength);
+    return newStr.substr(0, targetLength);
+}
+
+function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag));
+}
+
+function getErrorsStringFromException(e) {
+    const errorsString = (e && e.javaException && e.javaException.getErrorsString()) || [];
+    
+    if (!errorsString.length) {
+        return parseToArray(String(e));
+    }
+    
+    const errors = [];
+    
+    // Esse "for" se faz necessário pois o getErrorsString retorna
+    // um array com problemas de métodos, isto é, não é possível utilizar
+    // "forEach", "concat", etc.
+    for (let i = 0; i < errorsString.length; i++) {
+        errors.push(errorsString[i]);
+    }
+    
+    return errors;
+}
