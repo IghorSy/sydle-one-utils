@@ -409,5 +409,7 @@ function removeSpecialChars(str) {
 }
 
 function addMinutes(date, minutes) {
+    date = !!date? date :  new Date();
+	
     return new Date(date.getTime() + minutes*60000);
 }
