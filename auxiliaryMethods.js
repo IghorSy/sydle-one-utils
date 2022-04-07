@@ -33,7 +33,9 @@ module.exports = {
     padStart: padStart,
     padEnd: padEnd,
     escapeHTML: escapeHTML,
-    getErrorsStringFromException: getErrorsStringFromException
+    getErrorsStringFromException: getErrorsStringFromException,
+    removeSpecialChars: removeSpecialChars,
+    addMinutes: addMinutes
 };
 
 
@@ -400,4 +402,12 @@ function getErrorsStringFromException(e) {
     }
     
     return errors;
+}
+
+function removeSpecialChars(str) {
+    return isEmptyOrSpacesOrUndefined(str) || typeof str !== 'string' ? str : str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes*60000);
 }
