@@ -5,6 +5,7 @@ module.exports = {
     isEmptyOrSpacesOrUndefined: isEmptyOrSpacesOrUndefined,
     createMap: createMap,
     howManyTimesTheValueAppears: howManyTimesTheValueAppears,
+    howManyTimesTheValueAppearsMessage: howManyTimesTheValueAppearsMessage,
     hasChanged: hasChanged,
     monthDays: monthDays,
     compareObjs: compareObjs,
@@ -35,7 +36,8 @@ module.exports = {
     escapeHTML: escapeHTML,
     getErrorsStringFromException: getErrorsStringFromException,
     removeSpecialChars: removeSpecialChars,
-    addMinutes: addMinutes
+    addMinutes: addMinutes,
+    hasDuplicateItems: hasDuplicateItems
 };
 
 
@@ -105,7 +107,45 @@ function objectEntries(obj){
     
 }
 
+function hasDuplicateItems(arr) {
+   
+    return arr.some((item, index) => index !== arr.lastIndexOf(item));
+}
+
+
 function howManyTimesTheValueAppears(arr) {
+
+    let repeatedItems = [];
+
+    let res = arr.reduce((data, curr) => {
+        data[curr] = data[curr] ? ++data[curr] : 1;
+        return data;
+    }, {});
+
+    Object.entries = function (obj) {
+        var ownProps = Object.keys(obj),
+            i = ownProps.length,
+            resArray = new Array(i); // preallocate the Array
+        while (i--)
+            resArray[i] = [ownProps[i], obj[ownProps[i]]];
+
+        return resArray;
+    };
+
+    Object.entries(res).forEach(([val, numTimes]) => {
+        if (numTimes > 1)
+            repeatedItems.push(val);
+    });
+
+    // if (!repeatedItems.length) {
+    //     result.push("Nenhum resultado encontrado ou todos os elementos aparecem apenas 1 vez.");
+    // }
+
+
+    return repeatedItems;
+}
+
+function howManyTimesTheValueAppearsMessage(arr) {
 
     let result = [];
 
@@ -409,7 +449,8 @@ function removeSpecialChars(str) {
 }
 
 function addMinutes(date, minutes) {
-    date = !!date? date :  new Date();
+    date = !!date? new Date(date) :  new Date();
 	
     return new Date(date.getTime() + minutes*60000);
 }
+
